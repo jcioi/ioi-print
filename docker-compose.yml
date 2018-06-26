@@ -42,10 +42,11 @@ services:
       PRINTER_NAME: ioi_printer  # It should be the same as PRINTER_NAME in build args
 
   cups-back:
-    image: aadl/cups-alpine:2.2.3
+    build:
+      context: cups-back/
     ports:
     - 6631:631
     environment:
       # Username and password used for cups-back server
-      CUPS_USER_ADMIN: admin
-      CUPS_USER_PASSWORD: ioi
+      CUPS_ADMIN_USERNAME: admin
+      CUPS_ADMIN_PASSWORD: ioi
