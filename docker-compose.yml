@@ -30,7 +30,7 @@ services:
 
   cups-front:
     build:
-      context: cups/
+      context: cups-front
       args:
         PRINTER_NAME: ioi_printer  # The printer name to setup on contestants' computers
     ports:
@@ -43,7 +43,7 @@ services:
 
   cups-back:
     build:
-      context: cups-back/
+      context: cups-back
     ports:
     - 6631:631
     environment:
