@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
-exec python3 /usr/src/ioiprint/run.py
+cd /usr/src/ioiprint
+exec python3 run.py
