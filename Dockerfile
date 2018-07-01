@@ -1,8 +1,5 @@
 FROM ubuntu:bionic
 
-ARG TIMEZONE
-RUN echo "$TIMEZONE" > /etc/timezone
-
 RUN apt update -qq && DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
     python3 python3-pip python3-setuptools wkhtmltopdf qpdf xvfb cups-bsd tzdata && \
     pip3 install -U pip
