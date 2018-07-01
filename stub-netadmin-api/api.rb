@@ -1,7 +1,7 @@
 require 'sinatra/base'
 require 'json'
 
-class AdminAPI < Sinatra::Base
+class NetAdminAPI < Sinatra::Base
   get '/api/nodes/ip/:ip/' do
     [
       200,

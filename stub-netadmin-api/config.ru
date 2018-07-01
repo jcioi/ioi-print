@@ -1,3 +1,3 @@
 require_relative 'api'
 
-run AdminAPI.new
+run NetAdminAPI.new

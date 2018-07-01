@@ -10,7 +10,7 @@ services:
     - ./uploads/:/usr/src/ioiprint/uploads/  # the directory before ":" is the uploads directory on the host machine
     environment:
       TZ: Asia/Tokyo
-      NETADMIN_URL: admin-api  # the address of IOI Net Administration System
+      NETADMIN_URL: netadmin-api  # the address of IOI Net Administration System
       UPLOADS_DIRECTORY: /usr/src/ioiprint/uploads/
       CUPS_ADDRESS: cups-back:631
       # The printer or class names used for contest zones in json format (They should exist in cups-back server)
@@ -49,6 +49,6 @@ services:
       CUPS_ADMIN_USERNAME: admin
       CUPS_ADMIN_PASSWORD: ioi
 
-  admin-api:
+  netadmin-api:
     build:
-      context: stub-admin-api
+      context: stub-netadmin-api
