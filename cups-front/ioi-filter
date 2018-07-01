@@ -1,13 +1,30 @@
-#!/bin/sh
-PRINT_SERVER_ADDRESS="http://ioiprint:5000"
+#!/bin/bash
+set -eu
 
-TMP_FILE="/tmp/`date '+%F_%T'`.pdf"
+ARG_JOB=$1
+ARG_OPTIONS=$5
+ARG_FILENAME=${6:-}
 
-CONTESTANT_IP=`echo $5 | grep -oE "job-originating-host-name=(\w|\.)+" | sed -e "s/job-originating-host-name=//"`
-CUPS_JOB_ID=$1
+PRINT_SERVER_ADDRESS=http://ioiprint:5000
 
-cat - > ${TMP_FILE}
+time=$(date +%FT%T)
 
-SERVER_FILENAME=`curl --form "pdf=@${TMP_FILE}" --form "type=contestant" ${PRINT_SERVER_ADDRESS}/upload`
+if [[ $ARG_FILENAME ]]; then
+    filename=$ARG_FILENAME
+else
+    filename=$(mktemp -t "$time.XXXXXXXX")
+    cat - >"$filename"
+fi
 
-curl --data "filename=${SERVER_FILENAME}&ip=${CONTESTANT_IP}&cups_job_id=${CUPS_JOB_ID}" ${PRINT_SERVER_ADDRESS}/contestant
+if [[ $CONTENT_TYPE = application/vnd.cups-postscript ]]; then
+    old_filename=$filename
+    filename=$(mktemp -t "$time.XXXXXXXX")
+    ps2pdf "$old_filename" "$filename"
+fi
+
+client=$(LANG=C perl -e 'print $1 if $ARGV[0] =~ /job-originating-host-name=(\S*)/' "$ARG_OPTIONS")
+
+server_filename=$(curl -fsS --form "pdf=@${filename}" --form "type=contestant" "${PRINT_SERVER_ADDRESS}/upload")
+echo "server filename: ${server_filename}" >&2
+
+curl -fsS --data "filename=${server_filename}&ip=${client}&cups_job_id=${ARG_JOB}" "${PRINT_SERVER_ADDRESS}/contestant"

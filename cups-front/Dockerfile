@@ -1,21 +1,23 @@
-FROM aadl/cups-alpine:2.2.3
+FROM ubuntu:bionic
 
 ARG PRINTER_NAME=ioi_printer
 
-RUN apk add --update --no-cache curl
+RUN apt update -qq && DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
+    cups printer-driver-cups-pdf curl
 
-COPY printers.conf.template /root/printers.conf
-COPY printer.ppd /root/$PRINTER_NAME.ppd
-COPY ioi-filter /root/ioi-filter
-COPY docker-entrypoint.sh /root/docker-entrypoint.sh
+RUN echo 'ErrorLog stderr' >> /etc/cups/cups-files.conf
 
-RUN sed -i "s/PRINTER_NAME/$PRINTER_NAME/g" /root/printers.conf
-RUN chown root:lp /root/printers.conf && \
-    chmod 640 /root/printers.conf && \
-    chown root:lp /root/$PRINTER_NAME.ppd && \
-    chmod 640 /root/ioi_printer.ppd && \
-    chown root:root /root/ioi-filter && \
-    chmod 755 /root/ioi-filter && \
-    chmod +x /root/docker-entrypoint.sh
+COPY printers.conf.template /etc/cups/
+COPY printer.ppd /etc/cups/ppd/$PRINTER_NAME.ppd
+COPY ioi-filter /usr/lib/cups/filter/ioi-filter
+RUN chmod 640 /etc/cups/ppd/$PRINTER_NAME.ppd && \
+    chmod 755 /usr/lib/cups/filter/ioi-filter
 
-ENTRYPOINT ["/root/docker-entrypoint.sh"]
+RUN sed "s/PRINTER_NAME/$PRINTER_NAME/g" /etc/cups/printers.conf.template > /etc/cups/printers.conf
+
+COPY docker-entrypoint.sh /
+RUN chmod +x docker-entrypoint.sh
+COPY cupsd.conf /etc/cups/
+
+EXPOSE 631
+ENTRYPOINT ["/docker-entrypoint.sh"]

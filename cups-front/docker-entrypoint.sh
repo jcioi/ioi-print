@@ -1,6 +1,20 @@
-#!/bin/sh
-cp /root/printers.conf /etc/cups/printers.conf
-cp /root/${PRINTER_NAME}.ppd /etc/cups/ppd/${PRINTER_NAME}.ppd
-cp /root/ioi-filter /usr/lib/cups/filter/ioi-filter
+#!/bin/bash
+set -eu
 
-exec /root/start-cups.sh
+: ${CUPS_ADMIN_USERNAME:=admin}
+
+if [[ -z $CUPS_ADMIN_PASSWORD ]]; then
+    echo 'Empty $CUPS_ADMIN_PASSWORD.' >&2
+    exit 1
+fi
+
+if ! id "$CUPS_ADMIN_USERNAME" >/dev/null 2>&1; then
+    useradd -m -G lpadmin -s /usr/sbin/nologin "$CUPS_ADMIN_USERNAME"
+    echo "$CUPS_ADMIN_USERNAME:$CUPS_ADMIN_PASSWORD" | chpasswd
+fi
+
+if [[ -d /docker-entrypoint.d ]]; then
+    run-parts --exit-on-error /docker-entrypoint.d
+fi
+
+exec cupsd -f "$@"
