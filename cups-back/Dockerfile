@@ -8,10 +8,10 @@ RUN apt update -qq && DEBIAN_FRONTEND=noninteractive apt install -y --no-install
     cups cndrvcups-lipslx libstdc++6:i386 libxml2:i386
 
 RUN echo 'ErrorLog stderr' >> /etc/cups/cups-files.conf
+COPY cupsd.conf /etc/cups/
 
 COPY docker-entrypoint.sh /
 RUN chmod +x docker-entrypoint.sh
-COPY cupsd.conf /etc/cups/
 
 EXPOSE 631
 ENTRYPOINT ["/docker-entrypoint.sh"]

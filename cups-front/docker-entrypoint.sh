@@ -17,4 +17,6 @@ if [[ -d /docker-entrypoint.d ]]; then
     run-parts --exit-on-error /docker-entrypoint.d
 fi
 
+echo "IOIPRINT_URI=${IOIPRINT_URI@Q}" > /etc/default/ioi-filter
+
 exec cupsd -f "$@"

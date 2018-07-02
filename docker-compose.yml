@@ -35,6 +35,7 @@ services:
     ports:
     - 631:631
     environment:
+      IOIPRINT_URI: http://ioiprint:5000
       # Username and password used for cups-front server
       CUPS_ADMIN_USERNAME: admin
       CUPS_ADMIN_PASSWORD: ioi

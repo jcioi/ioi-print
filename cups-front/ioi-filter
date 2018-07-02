@@ -1,11 +1,11 @@
 #!/bin/bash
 set -eu
 
+. /etc/default/ioi-filter  # Expected to define IOIPRINT_URI
+
 ARG_JOB=$1
 ARG_OPTIONS=$5
 ARG_FILENAME=${6:-}
-
-PRINT_SERVER_ADDRESS=http://ioiprint:5000
 
 time=$(date +%FT%T)
 
@@ -24,7 +24,7 @@ fi
 
 client=$(LANG=C perl -e 'print $1 if $ARGV[0] =~ /job-originating-host-name=(\S*)/' "$ARG_OPTIONS")
 
-server_filename=$(curl -fsS --form "pdf=@${filename}" --form "type=contestant" "${PRINT_SERVER_ADDRESS}/upload")
+server_filename=$(curl -fsS --form "pdf=@${filename}" --form "type=contestant" "${IOIPRINT_URI}/upload")
 echo "server filename: ${server_filename}" >&2
 
-curl -fsS --data "filename=${server_filename}&ip=${client}&cups_job_id=${ARG_JOB}" "${PRINT_SERVER_ADDRESS}/contestant"
+curl -fsS --data "filename=${server_filename}&ip=${client}&cups_job_id=${ARG_JOB}" "${IOIPRINT_URI}/contestant" >&2
