@@ -31,12 +31,11 @@ services:
   cups-front:
     build:
       context: cups-front
-      args:
-        PRINTER_NAME: ioi_printer  # The printer name to setup on contestants' computers
     ports:
     - 631:631
     environment:
-      IOIPRINT_URI: http://ioiprint:5000
+      PRINTER_NAME: ioi_printer  # The printer name to setup on contestants' computers
+      IOIPRINT_HOST: ioiprint:5000
       # Username and password used for cups-front server
       CUPS_ADMIN_USERNAME: admin
       CUPS_ADMIN_PASSWORD: ioi
