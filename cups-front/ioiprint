@@ -10,7 +10,7 @@ IOIPRINT_URI=${DEVICE_URI/#ioiprint/http}
 
 if [[ $CONTENT_TYPE != application/vnd.cups-pdf ]]; then
     echo "Content type not supported: $CONTENT_TYPE" >&2
-    exit 1
+    exit 5  # CUPS_BACKEND_CANCEL
 fi
 
 if [[ $ARG_FILENAME ]]; then
@@ -23,7 +23,7 @@ fi
 client=$(LANG=C perl -e 'print $1 if $ARGV[0] =~ /job-originating-host-name=(\S*)/' "$ARG_OPTIONS")
 if [[ -z $client ]]; then
     echo 'Client address not identified' >&2
-    exit 1
+    exit 5  # CUPS_BACKEND_CANCEL
 fi
 
 server_filename=$(curl -fsS --form "pdf=@${filename}" --form "type=contestant" "${IOIPRINT_URI}/upload")
