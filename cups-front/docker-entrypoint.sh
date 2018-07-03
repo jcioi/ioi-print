@@ -13,10 +13,12 @@ if ! id "$CUPS_ADMIN_USERNAME" >/dev/null 2>&1; then
     echo "$CUPS_ADMIN_USERNAME:$CUPS_ADMIN_PASSWORD" | chpasswd
 fi
 
+sed -e "s|%PRINTER_NAME%|$PRINTER_NAME|g" -e "s|%IOIPRINT_HOST%|$IOIPRINT_HOST|g" \
+  /etc/cups/printers.conf.template > /etc/cups/printers.conf
+install -m 640 /etc/cups/ioiprint.ppd "/etc/cups/ppd/$PRINTER_NAME.ppd"
+
 if [[ -d /docker-entrypoint.d ]]; then
     run-parts --exit-on-error /docker-entrypoint.d
 fi
-
-echo "IOIPRINT_URI=${IOIPRINT_URI@Q}" > /etc/default/ioi-filter
 
 exec cupsd -f "$@"

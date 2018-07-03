@@ -2,11 +2,11 @@
 set -eu
 trap 'exit 1' ERR  # CUPS_BACKEND_FAILED (ref. backend(7))
 
-. /etc/default/ioi-filter  # Expected to define IOIPRINT_URI
-
 ARG_JOB=$1
 ARG_OPTIONS=$5
 ARG_FILENAME=${6:-}
+
+IOIPRINT_URI=${DEVICE_URI/#ioiprint/http}
 
 if [[ $CONTENT_TYPE != application/vnd.cups-pdf ]]; then
     echo "Content type not supported: $CONTENT_TYPE" >&2
