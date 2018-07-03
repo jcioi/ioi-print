@@ -42,8 +42,7 @@
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
 
-*cupsFilter:    "application/vnd.cups-postscript 0 ioi-filter"
-*cupsFilter:    "application/vnd.cups-pdf 0 ioi-filter"
+*cupsFilter:    "application/vnd.cups-pdf 0 -"
 
 *HWMargins: 0 0 0 0
 *VariablePaperSize: True

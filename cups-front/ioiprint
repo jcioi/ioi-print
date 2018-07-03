@@ -1,5 +1,6 @@
 #!/bin/bash
 set -eu
+trap 'exit 1' ERR  # CUPS_BACKEND_FAILED (ref. backend(7))
 
 . /etc/default/ioi-filter  # Expected to define IOIPRINT_URI
 
@@ -7,22 +8,23 @@ ARG_JOB=$1
 ARG_OPTIONS=$5
 ARG_FILENAME=${6:-}
 
-time=$(date +%FT%T)
+if [[ $CONTENT_TYPE != application/vnd.cups-pdf ]]; then
+    echo "Content type not supported: $CONTENT_TYPE" >&2
+    exit 1
+fi
 
 if [[ $ARG_FILENAME ]]; then
     filename=$ARG_FILENAME
 else
-    filename=$(mktemp -t "$time.XXXXXXXX")
+    filename=$(mktemp -t "cups-job-${ARG_JOB}.XXXXXXXX.pdf")
     cat - >"$filename"
 fi
 
-if [[ $CONTENT_TYPE = application/vnd.cups-postscript ]]; then
-    old_filename=$filename
-    filename=$(mktemp -t "$time.XXXXXXXX")
-    ps2pdf "$old_filename" "$filename"
-fi
-
 client=$(LANG=C perl -e 'print $1 if $ARGV[0] =~ /job-originating-host-name=(\S*)/' "$ARG_OPTIONS")
+if [[ -z $client ]]; then
+    echo 'Client address not identified' >&2
+    exit 1
+fi
 
 server_filename=$(curl -fsS --form "pdf=@${filename}" --form "type=contestant" "${IOIPRINT_URI}/upload")
 echo "server filename: ${server_filename}" >&2
