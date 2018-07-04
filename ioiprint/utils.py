@@ -1,17 +1,14 @@
 import os
 import subprocess
+import tempfile
 import urllib.request
 
 import pdfkit
 from xvfbwrapper import Xvfb
 
-_TMP_DIR = None
-
 
 def create_temp_directory():
-    process = subprocess.run(['mktemp', '-d'], stdout=subprocess.PIPE,
-                             check=True)
-    return process.stdout[:-1].decode()
+    return tempfile.mkdtemp('ioiprint-')
 
 
 def download(url, file_name, temp_directory):
