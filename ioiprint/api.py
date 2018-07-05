@@ -31,7 +31,7 @@ def mass():
     printer = request.form.get('printer', DEFAULT_PRINTER)
     count = int(request.form['count'])
     for _ in range(count):
-        print_file(os.path.join(PDF_UPLOAD_PATH, filename), printer)
+        print_file(os.path.join(PDF_UPLOAD_PATH, filename), printer, 'mass')
     return "OK"
 
 
@@ -48,8 +48,10 @@ def translation():
         country_name,
         temp_directory
     )
+
+    job_name = 'translation:%s'%country_code
     for _ in range(count):
-        print_file(final_pdf_path, DEFAULT_PRINTER)
+        print_file(final_pdf_path, DEFAULT_PRINTER, job_name)
     return "OK"
 
 
@@ -72,7 +74,9 @@ def cms_request():
         desk_map_img,
         temp_directory
     )
-    print_file(request_pdf_path, PRINTER_FOR_ZONE[contestant_data['zone']])
+
+    job_name = 'cms_request:%s'%contestant_data['contestatnt_id']
+    print_file(request_pdf_path, PRINTER_FOR_ZONE[contestant_data['zone']], job_name)
     return "OK"
 
 
@@ -98,5 +102,7 @@ def contestant():
         cups_job_id,
         temp_directory
     )
-    print_file(final_pdf_path, PRINTER_FOR_ZONE[contestant_data['zone']])
+
+    job_name = 'contestant:%s:%s'%(contestant_data['contestant_id'], cups_job_id)
+    print_file(final_pdf_path, PRINTER_FOR_ZONE[contestant_data['zone']], job_name)
     return "OK"
