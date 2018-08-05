@@ -4,8 +4,8 @@ import string
 
 from flask import Flask, request, jsonify
 
-from ioiprint.settings import PDF_UPLOAD_PATH, \
-    printer_for_contestant, printer_for_translation, printer_for_mass
+from ioiprint.settings import printer_for_contestant, printer_for_translation, \
+    printer_for_mass
 from ioiprint.modifier import make_cms_request_pdf, make_contestant_pdf, \
     make_translation_pdf
 from ioiprint.contestant_data import get_contestant_data
@@ -18,36 +18,31 @@ app = Flask('ioiprint')
 def healthcheck():
     return 'OK'
 
-@app.route('/upload', methods=['POST'])
-def upload():
-    file = request.files['pdf']
-    random_file_name = ''.join(
-        random.choice(string.ascii_uppercase + string.digits)
-        for _ in range(10)
-    ) + '.pdf'
-    file.save(os.path.join(PDF_UPLOAD_PATH, random_file_name))
-    return random_file_name
-
 
 @app.route('/mass', methods=['POST'])
 def mass():
-    filename = request.form['filename']
+    temp_directory = create_temp_directory()
+    original_pdf_path = os.path.join(temp_directory, 'original.pdf')
+    request.files['pdf'].save(original_pdf_path)
+
     printer = request.form.get('printer', printer_for_mass())
     count = int(request.form['count'])
     for _ in range(count):
-        print_file(os.path.join(PDF_UPLOAD_PATH, filename), printer, 'mass')
+        print_file(original_pdf_path, printer, 'mass')
     return "OK"
 
 
 @app.route('/translation', methods=['POST'])
 def translation():
-    filename = request.form['filename']
+    temp_directory = create_temp_directory()
+    original_pdf_path = os.path.join(temp_directory, 'original.pdf')
+    request.files['pdf'].save(original_pdf_path)
+
     country_code = request.form['country_code']
     country_name = request.form['country_name']
     count = int(request.form['count'])
-    temp_directory = create_temp_directory()
     final_pdf_path = make_translation_pdf(
-        os.path.join(PDF_UPLOAD_PATH, filename),
+        original_pdf_path,
         country_code,
         country_name,
         temp_directory
@@ -61,10 +56,11 @@ def translation():
 
 @app.route('/cms_request', methods=['POST'])
 def cms_request():
+    temp_directory = create_temp_directory()
+
     request_message = request.form['request_message']
     ip = request.form['ip']
     contestant_data = get_contestant_data(ip)
-    temp_directory = create_temp_directory()
     if 'desk_image_url' in contestant_data:
         desk_map_img = download(contestant_data['desk_image_url'],
                                 'desk_map.svg', temp_directory)
@@ -86,18 +82,20 @@ def cms_request():
 
 @app.route('/contestant', methods=['POST'])
 def contestant():
-    filename = request.form['filename']
+    temp_directory = create_temp_directory()
+    original_pdf_path = os.path.join(temp_directory, 'original.pdf')
+    request.files['pdf'].save(original_pdf_path)
+
     ip = request.form['ip']
     cups_job_id = request.form['cups_job_id']
     contestant_data = get_contestant_data(ip)
-    temp_directory = create_temp_directory()
     if 'desk_image_url' in contestant_data:
         desk_map_img = download(contestant_data['desk_image_url'],
                                 'desk_map.svg', temp_directory)
     else:
         desk_map_img = contestant_data['desk_image_path']
     final_pdf_path = make_contestant_pdf(
-        os.path.join(PDF_UPLOAD_PATH, filename),
+        original_pdf_path,
         contestant_data['contestant_id'],
         contestant_data['contestant_name'],
         contestant_data['contestant_country'],

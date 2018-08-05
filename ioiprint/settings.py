@@ -25,15 +25,12 @@ if 'NETADMIN_URL' in os.environ:
     SETTINGS['netadmin_url'] = os.envion['NETADMIN_URL']
 if 'CUPS_ADDRESS' in os.environ:
     SETTINGS['cups_address'] = os.environ['CUPS_ADDRESS']
-if 'UPLOAD_DIRECTORY' in os.environ:
-    SETTINGS['upload_directory'] = os.environ['UPLOAD_DIRECTORY']
 
 MAX_NUM_OF_PAGES_FOR_CONTESTANTS = SETTINGS.get('contestant_max_pages')
 
 NET_ADMIN_URL = SETTINGS.get('netadmin_url')
 CONTESTANT_DATA_URL = '{url}/api/nodes/ip/{{ip}}/'.format(url=NET_ADMIN_URL)
 
-PDF_UPLOAD_PATH = SETTINGS.get('upload_directory')
 CUPS_SERVER_ADDRESS = SETTINGS.get('cups_address')
 
 def printer_for_contestant(zone):

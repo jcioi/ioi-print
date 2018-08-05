@@ -115,25 +115,12 @@ An http server running on port 5000 (you can change it in `docker-compose.yml`).
 
 There are 5 type of requests system can handle:
 
-###### upload
-
-```
-endpoint: /upload
-method: POST
-parameters: pdf -> a pdf file in multi-part form data
-output: uploaded_file_name -> Used in other requests
-```
-
-You should upload a pdf file before using `mass`, `contestant` or `translation` requests.
-This endpoint is used to upload files and it will give back the file name in the response body.
-You should use this file name in the next request.
-
 ###### mass
 
 ```
 endpoint: /mass
 method: POST
-parameters: filename -> output of previously called upload request
+parameters: pdf -> PDF document to print
             printer -> printer or class name that is configured in cups-back server
                        (If not given default printer is used)
             count -> number of times the system should print the file
@@ -146,7 +133,7 @@ This will print the file previously uploaded `count` times on the printer specif
 ```
 endpoint: /translation
 method: POST
-parameters: filename -> output of previously called upload request
+parameters: pdf -> PDF document to print
             country_code -> country code of the translating country (e.g. IR)
             country_name -> country name of the translating country (e.g. Iran)
             count -> number of times the system should print the file
@@ -170,7 +157,7 @@ This will print a page with contestant info and request message on the printer c
 ```
 endpoint: /contestant
 method: POST
-parameters: filename -> output of previously called upload request
+parameters: pdf -> PDF docment to print
             ip -> IP of the contestant computer
             cups_job_id -> The print job id of the cups server requesting this print
 ```

@@ -10,7 +10,6 @@ services:
       TZ: Asia/Tokyo
       CONTSTANT_MAX_PAGES: 10
       NETADMIN_URL: http://netadmin-api  # the address of IOI Net Administration System
-      UPLOADS_DIRECTORY: /tmp
       CUPS_ADDRESS: cups-back:631
       # The printer or class names used for contest zones in json format (They should exist in cups-back server)
       PRINTERS_FOR_ZONES: >

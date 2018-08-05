@@ -17,6 +17,4 @@ if [ ! -f "${FILENAME}" ]; then
     exit 1
 fi
 
-SERVER_FILENAME=`curl --form "pdf=@${FILENAME}" --form "type=mass" ${PRINT_SERVER_ADDRESS}/upload`
-
-curl --data "filename=${SERVER_FILENAME}&printer=${PRINTER}&count=${COUNT}" ${PRINT_SERVER_ADDRESS}/mass
+curl --form "pdf=@${FILENAME}" --form "printer=${PRINTER}" --form "count=${COUNT}" "${PRINT_SERVER_ADDRESS}/mass"

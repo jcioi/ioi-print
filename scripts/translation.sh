@@ -18,6 +18,4 @@ if [ ! -f "${FILENAME}" ]; then
     exit 1
 fi
 
-SERVER_FILENAME=`curl --form "pdf=@${FILENAME}" --form "type=translation" ${PRINT_SERVER_ADDRESS}/upload`
-
-curl --data "filename=${SERVER_FILENAME}&country_code=${COUNTRY_CODE}&country_name=${COUNTRY_NAME}&count=${COUNT}" ${PRINT_SERVER_ADDRESS}/translation
+curl --form "pdf=@${FILENAME}" --form "country_code=${COUNTRY_CODE}" --form "country_name=${COUNTRY_NAME}" --form "count=${COUNT}" "${PRINT_SERVER_ADDRESS}/translation"
