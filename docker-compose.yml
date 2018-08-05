@@ -6,13 +6,11 @@ services:
       context: .
     ports:
     - 5000:5000  # The first 5000 is the port the print service will be on
-    volumes:
-    - ./data/uploads/:/srv/ioiprint/uploads/  # the directory before ":" is the uploads directory on the host machine
     environment:
       TZ: Asia/Tokyo
-      LIMIT_CONTESTANT_PRINT_PAGES: 10
-      NETADMIN_URL: netadmin-api  # the address of IOI Net Administration System
-      UPLOADS_DIRECTORY: /srv/ioiprint/uploads/
+      CONTSTANT_MAX_PAGES: 10
+      NETADMIN_URL: http://netadmin-api  # the address of IOI Net Administration System
+      UPLOADS_DIRECTORY: /tmp
       CUPS_ADDRESS: cups-back:631
       # The printer or class names used for contest zones in json format (They should exist in cups-back server)
       PRINTERS_FOR_ZONES: >

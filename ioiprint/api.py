@@ -4,7 +4,7 @@ import string
 
 from flask import Flask, request
 
-from ioiprint import DEFAULT_PRINTER, PDF_UPLOAD_PATH, PRINTER_FOR_ZONE
+from ioiprint.settings import DEFAULT_PRINTER, PDF_UPLOAD_PATH, PRINTER_FOR_ZONE
 from ioiprint.modifier import make_cms_request_pdf, make_contestant_pdf, \
     make_translation_pdf
 from ioiprint.contestant_data import get_contestant_data

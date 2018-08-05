@@ -4,7 +4,7 @@ from datetime import datetime
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-from ioiprint import MAX_NUM_OF_PAGES_FOR_CONTESTANTS, STATIC_PATH, \
+from ioiprint.settings import MAX_NUM_OF_PAGES_FOR_CONTESTANTS, STATIC_PATH, \
     TEMPLATES_PATH
 from ioiprint.utils import html_to_pdf
 
