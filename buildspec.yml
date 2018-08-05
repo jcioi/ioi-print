@@ -11,7 +11,6 @@ phases:
       - if [ -e /opt/ioiprint_venv.cache ]; then sha256sum -c /opt/ioiprint_venv.cache || rm -rf /opt/ioiprint_venv /opt/ioiprint_venv.cache; fi
       - if [ ! -e /opt/ioiprint_venv.cache ]; then mkdir -p /opt/ioiprint_venv; fi
       - chmod +x ./deploy/*.sh
-      - git rev-parse HEAD > REVISION
   build:
     commands:
       - ./deploy/install-deps.sh

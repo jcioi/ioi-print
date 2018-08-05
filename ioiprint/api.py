@@ -2,7 +2,7 @@ import os
 import random
 import string
 
-from flask import Flask, request
+from flask import Flask, request, jsonify
 
 from ioiprint.settings import DEFAULT_PRINTER, PDF_UPLOAD_PATH, PRINTER_FOR_ZONE
 from ioiprint.modifier import make_cms_request_pdf, make_contestant_pdf, \
@@ -13,6 +13,9 @@ from ioiprint.utils import create_temp_directory, download
 
 app = Flask('ioiprint')
 
+@app.route('/healthcheck', methods=['GET'])
+def healthcheck():
+    return 'OK'
 
 @app.route('/upload', methods=['POST'])
 def upload():
