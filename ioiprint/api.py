@@ -10,7 +10,7 @@ from ioiprint.modifier import make_cms_request_pdf, make_contestant_pdf, \
     make_translation_pdf
 from ioiprint.contestant_data import get_contestant_data
 from ioiprint.print import print_file
-from ioiprint.utils import create_temp_directory, download
+from ioiprint.utils import create_temp_directory
 
 app = Flask('ioiprint')
 
@@ -61,17 +61,14 @@ def cms_request():
     request_message = request.form['request_message']
     ip = request.form['ip']
     contestant_data = get_contestant_data(ip)
-    if 'desk_image_url' in contestant_data:
-        desk_map_img = download(contestant_data['desk_image_url'],
-                                'desk_map.svg', temp_directory)
-    else:
-        desk_map_img = contestant_data['desk_image_path']
+    desk_image_url = contestant_data['desk_image_url']
+
     request_pdf_path = make_cms_request_pdf(
         request_message,
         contestant_data['contestant_id'],
         contestant_data['contestant_name'],
         contestant_data['desk_id'],
-        desk_map_img,
+        desk_image_url,
         temp_directory
     )
 
@@ -89,18 +86,15 @@ def contestant():
     ip = request.form['ip']
     cups_job_id = request.form['cups_job_id']
     contestant_data = get_contestant_data(ip)
-    if 'desk_image_url' in contestant_data:
-        desk_map_img = download(contestant_data['desk_image_url'],
-                                'desk_map.svg', temp_directory)
-    else:
-        desk_map_img = contestant_data['desk_image_path']
+    desk_image_url = contestant_data['desk_image_url']
+
     final_pdf_path = make_contestant_pdf(
         original_pdf_path,
         contestant_data['contestant_id'],
         contestant_data['contestant_name'],
         contestant_data['contestant_country'],
         contestant_data['desk_id'],
-        desk_map_img,
+        desk_image_url,
         cups_job_id,
         temp_directory
     )
