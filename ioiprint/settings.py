@@ -27,10 +27,6 @@ if 'CUPS_ADDRESS' in os.environ:
     SETTINGS['cups_address'] = os.environ['CUPS_ADDRESS']
 
 MAX_NUM_OF_PAGES_FOR_CONTESTANTS = SETTINGS.get('contestant_max_pages')
-
-NET_ADMIN_URL = SETTINGS.get('netadmin_url')
-CONTESTANT_DATA_URL = '{url}/api/nodes/ip/{{ip}}/'.format(url=NET_ADMIN_URL)
-
 CUPS_SERVER_ADDRESS = SETTINGS.get('cups_address')
 
 def printer_for_contestant(zone):
@@ -47,3 +43,6 @@ def printer_for_translation():
 
 def printer_for_mass():
     return SETTINGS['default_printer']
+
+def contestant_data_url(ip):
+    return '{base}/api/nodes/ip/{ip}/'.format(base=SETTINGS['netadmin_url'], ip=ip)

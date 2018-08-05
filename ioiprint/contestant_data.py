@@ -1,17 +1,18 @@
 import json
+from urllib.parse import urljoin
 from urllib.request import urlopen
 
-from ioiprint.settings import CONTESTANT_DATA_URL, NET_ADMIN_URL
+from ioiprint.settings import contestant_data_url
 
 
 def get_contestant_data(ip):
-    url_address = CONTESTANT_DATA_URL.format(ip=ip)
-    data = json.loads(urlopen(url_address).read().decode('utf-8'))
+    url = contestant_data_url(ip)
+    data = json.loads(urlopen(url).read().decode('utf-8'))
     return {
         'contestant_id': data['contestant']['id'],
         'contestant_name': data['contestant']['name'],
         'contestant_country': data['contestant']['country'],
         'zone': data['desk']['zone'],
         'desk_id': data['desk']['id'],
-        'desk_image_url': NET_ADMIN_URL + data['desk']['map']
+        'desk_image_url': urljoin(url, data['desk']['map']),
     }
