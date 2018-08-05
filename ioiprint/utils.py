@@ -11,6 +11,10 @@ def create_temp_directory():
     return tempfile.mkdtemp('ioiprint-')
 
 
+def fetch_contestant_print_id():
+    return 42  # TODO
+
+
 def html_to_pdf(html, name, temp_directory):
     html_file_path = os.path.join(temp_directory, '%s.html' % name)
     with open(html_file_path, 'wb') as html_file:

@@ -10,9 +10,12 @@ from ioiprint.modifier import make_cms_request_pdf, make_contestant_pdf, \
     make_translation_pdf
 from ioiprint.contestant_data import get_contestant_data
 from ioiprint.print import print_file
-from ioiprint.utils import create_temp_directory
+from ioiprint.utils import create_temp_directory, fetch_contestant_print_id
 
 app = Flask('ioiprint')
+
+def _real_ip():
+    return request.headers.get('X-Real-IP', request.remote_addr)
 
 @app.route('/healthcheck', methods=['GET'])
 def healthcheck():
@@ -59,16 +62,14 @@ def cms_request():
     temp_directory = create_temp_directory()
 
     request_message = request.form['request_message']
-    ip = request.form['ip']
-    contestant_data = get_contestant_data(ip)
-    desk_image_url = contestant_data['desk_image_url']
+    contestant_data = get_contestant_data(_real_ip())
 
     request_pdf_path = make_cms_request_pdf(
         request_message,
         contestant_data['contestant_id'],
         contestant_data['contestant_name'],
         contestant_data['desk_id'],
-        desk_image_url,
+        contestant_data['desk_image_url'],
         temp_directory
     )
 
@@ -83,10 +84,8 @@ def contestant():
     original_pdf_path = os.path.join(temp_directory, 'original.pdf')
     request.files['pdf'].save(original_pdf_path)
 
-    ip = request.form['ip']
-    cups_job_id = request.form['cups_job_id']
-    contestant_data = get_contestant_data(ip)
-    desk_image_url = contestant_data['desk_image_url']
+    contestant_data = get_contestant_data(_real_ip())
+    print_id = fetch_contestant_print_id()
 
     final_pdf_path = make_contestant_pdf(
         original_pdf_path,
@@ -94,11 +93,11 @@ def contestant():
         contestant_data['contestant_name'],
         contestant_data['contestant_country'],
         contestant_data['desk_id'],
-        desk_image_url,
-        cups_job_id,
+        contestant_data['desk_image_url'],
+        print_id,
         temp_directory
     )
 
-    job_name = 'contestant:%s:%s'%(contestant_data['contestant_id'], cups_job_id)
+    job_name = 'contestant:%s:%s'%(contestant_data['contestant_id'], print_id)
     print_file(final_pdf_path, printer_for_contestant(contestant_data['zone']), job_name)
     return "OK"
