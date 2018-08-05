@@ -29,12 +29,24 @@ if 'UPLOAD_DIRECTORY' in os.environ:
     SETTINGS['upload_directory'] = os.environ['UPLOAD_DIRECTORY']
 
 MAX_NUM_OF_PAGES_FOR_CONTESTANTS = SETTINGS.get('contestant_max_pages')
-PRINTER_FOR_ZONE = SETTINGS.get('contestant_printer_map')
-CONTESTANT_PRINTER = SETTINGS.get('contestant_printer')
-DEFAULT_PRINTER = SETTINGS.get('default_printer')
 
 NET_ADMIN_URL = SETTINGS.get('netadmin_url')
 CONTESTANT_DATA_URL = '{url}/api/nodes/ip/{{ip}}/'.format(url=NET_ADMIN_URL)
 
 PDF_UPLOAD_PATH = SETTINGS.get('upload_directory')
 CUPS_SERVER_ADDRESS = SETTINGS.get('cups_address')
+
+def printer_for_contestant(zone):
+    if 'contestant_printer_map' in SETTINGS:
+        return SETTINGS['contestant_printer_map'][zone]
+    if 'contestant_printer' in 'SETTINGS':
+        return SETTINGS['contestant_printer']
+    return SETTINGS['default_printer']
+
+def printer_for_translation():
+    if 'translation_printer' in 'SETTINGS':
+        return SETTINGS['translation_printer']
+    return SETTINGS['default_printer']
+
+def printer_for_mass():
+    return SETTINGS['default_printer']

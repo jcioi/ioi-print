@@ -4,7 +4,8 @@ import string
 
 from flask import Flask, request, jsonify
 
-from ioiprint.settings import DEFAULT_PRINTER, PDF_UPLOAD_PATH, PRINTER_FOR_ZONE
+from ioiprint.settings import PDF_UPLOAD_PATH, \
+    printer_for_contestant, printer_for_translation, printer_for_mass
 from ioiprint.modifier import make_cms_request_pdf, make_contestant_pdf, \
     make_translation_pdf
 from ioiprint.contestant_data import get_contestant_data
@@ -31,7 +32,7 @@ def upload():
 @app.route('/mass', methods=['POST'])
 def mass():
     filename = request.form['filename']
-    printer = request.form.get('printer', DEFAULT_PRINTER)
+    printer = request.form.get('printer', printer_for_mass())
     count = int(request.form['count'])
     for _ in range(count):
         print_file(os.path.join(PDF_UPLOAD_PATH, filename), printer, 'mass')
@@ -54,7 +55,7 @@ def translation():
 
     job_name = 'translation:%s'%country_code
     for _ in range(count):
-        print_file(final_pdf_path, DEFAULT_PRINTER, job_name)
+        print_file(final_pdf_path, printer_for_translation(), job_name)
     return "OK"
 
 
@@ -79,7 +80,7 @@ def cms_request():
     )
 
     job_name = 'cms_request:%s'%contestant_data['contestatnt_id']
-    print_file(request_pdf_path, PRINTER_FOR_ZONE[contestant_data['zone']], job_name)
+    print_file(request_pdf_path, printer_for_contestant(contestant_data['zone']), job_name)
     return "OK"
 
 
@@ -107,5 +108,5 @@ def contestant():
     )
 
     job_name = 'contestant:%s:%s'%(contestant_data['contestant_id'], cups_job_id)
-    print_file(final_pdf_path, PRINTER_FOR_ZONE[contestant_data['zone']], job_name)
+    print_file(final_pdf_path, printer_for_contestant(contestant_data['zone']), job_name)
     return "OK"
