@@ -5,47 +5,27 @@ services:
     build:
       context: .
     ports:
-    - 5000:5000  # The first 5000 is the port the print service will be on
+      - 5000:5000
     environment:
       TZ: Asia/Tokyo
-      CONTSTANT_MAX_PAGES: 10
-      NETADMIN_URL: http://netadmin-api  # the address of IOI Net Administration System
-      CUPS_ADDRESS: cups-back:631
-      # The printer or class names used for contest zones in json format (They should exist in cups-back server)
-      PRINTERS_FOR_ZONES: >
+      IOIPRINT_CONFIG: >-
         {
-          "A": "floor1",
-          "B": "floor1",
-          "C": "floor1",
-          "D": "floor1",
-          "E": "floor2",
-          "F": "floor2",
-          "G": "floor2",
-          "H": "floor2"
+          "contestant_max_pages": 10,
+          "netadmin_url": "http://netadmin-api",
+          "cups_server": "cups:631",
+          "contestant_printer": "PDF",
+          "default_printer": "PDF"
         }
-      DEFAULT_PRINTER: default  # The printer or class name used for translation and mass requests
 
-  cups-front:
-    build:
-      context: cups-front
+  cups:
+    image: hanazuki/cups
     ports:
-    - 631:631
+      - 6631:631
     environment:
-      PRINTER_NAME: ioi_printer  # The printer name to setup on contestants' computers
-      IOIPRINT_HOST: ioiprint:5000
-      # Username and password used for cups-front server
       CUPS_ADMIN_USERNAME: admin
       CUPS_ADMIN_PASSWORD: ioi
-
-  cups-back:
-    build:
-      context: cups-back
-    ports:
-    - 6631:631
-    environment:
-      # Username and password used for cups-back server
-      CUPS_ADMIN_USERNAME: admin
-      CUPS_ADMIN_PASSWORD: ioi
+    volumes:
+      - ./output:/var/spool/cups-pdf/ANONYMOUS
 
   netadmin-api:
     build:

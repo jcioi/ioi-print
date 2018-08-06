@@ -27,16 +27,16 @@ class NetAdminAPI < Sinatra::Base
         mac: '00:00:00:00:00:00',
       },
       contestant: {
-        id: 'JPN-345',
+        id: 'JPN-01',
         country: 'JPN',
-        number: 345,
+        number: '01',
         name: 'Morumotto Reloaded',
       },
       desk: {
         zone: 'A',
         number: 10,
         map: "/api/nodes/ip/#{ip}/map/",
-        id: 'A10',
+        id: 'A-10',
       },
     }
   end

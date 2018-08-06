@@ -73,7 +73,7 @@ def cms_request():
         temp_directory
     )
 
-    job_name = 'cms_request:%s'%contestant_data['contestatnt_id']
+    job_name = 'cms_request:%s'%contestant_data['contestant_id']
     print_file(request_pdf_path, printer_for_contestant(contestant_data['zone']), job_name)
     return "OK"
 

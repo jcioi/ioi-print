@@ -1,6 +1,0 @@
-# printer classes and devices
-
-test:
-  - name: prn-test-01
-    uri: lpd://10.64.20.100
-    model: CNCUPSLBP352ZJ.ppd

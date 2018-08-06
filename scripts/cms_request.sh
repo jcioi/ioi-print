@@ -10,4 +10,4 @@ fi
 REQUEST_MSG=$1
 CONTESTANT_IP=$2
 
-curl --data "request_message=${REQUEST_MSG}&ip=${CONTESTANT_IP}" ${PRINT_SERVER_ADDRESS}/cms_request
+curl --data "request_message=${REQUEST_MSG}&ip=${CONTESTANT_IP}" "${PRINT_SERVER_ADDRESS}/cms_request"
