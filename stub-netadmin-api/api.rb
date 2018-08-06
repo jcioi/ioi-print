@@ -27,9 +27,9 @@ class NetAdminAPI < Sinatra::Base
         mac: '00:00:00:00:00:00',
       },
       contestant: {
-        id: 'JPN-01',
+        id: 'JPN-1',
         country: 'JPN',
-        number: '01',
+        number: '1',
         name: 'Morumotto Reloaded',
       },
       desk: {
