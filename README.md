@@ -127,7 +127,7 @@ This will add a first and last page to the file and print it on the printer conf
 
 ## Development
 
-Run `docker-compose up` to spawn ioiprint, CUPS server (connected to a CUPS-PDF virtual printer instead of real one), and NetAdmin stub service.
+Run `docker-compose up` to spawn ioiprint, CUPS server (connected to a CUPS-PDF virtual printer instead of real one), and NetAdmin stub service. ioiprint listens to 5000/tcp and you can access to the CUPS web interface at <https://localhost:6631/>.
 
 Use the scripts under `./scripts` to generate API calls and check the generated PDF files in `./output`.
 
