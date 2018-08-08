@@ -1,4 +1,6 @@
 import os
+import platform
+import random
 import subprocess
 import tempfile
 import urllib.request
@@ -11,8 +13,10 @@ def create_temp_directory():
     return tempfile.mkdtemp('ioiprint-')
 
 
-def fetch_contestant_print_id():
-    return 42  # TODO
+PRINT_ID_CHARS = 'BCDFGHJKLMNPQRSTVWXYZbcdfghjklmnpqrstvwxyz'
+def generate_print_id():
+    id = ''.join(random.choices(PRINT_ID_CHARS, k=10))
+    return "%s@%s"%(id, platform.uname().node)
 
 
 def html_to_pdf(html, name, temp_directory):

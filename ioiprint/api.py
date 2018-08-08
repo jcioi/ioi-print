@@ -10,7 +10,7 @@ from ioiprint.modifier import make_cms_request_pdf, make_contestant_pdf, \
     make_translation_pdf
 from ioiprint.contestant_data import get_contestant_data
 from ioiprint.print import print_file
-from ioiprint.utils import create_temp_directory, fetch_contestant_print_id
+from ioiprint.utils import create_temp_directory, generate_print_id
 
 app = Flask('ioiprint')
 
@@ -85,7 +85,7 @@ def contestant():
     request.files['pdf'].save(original_pdf_path)
 
     contestant_data = get_contestant_data(_real_ip())
-    print_id = fetch_contestant_print_id()
+    print_id = generate_print_id()
 
     final_pdf_path = make_contestant_pdf(
         original_pdf_path,
@@ -100,4 +100,4 @@ def contestant():
 
     job_name = 'contestant:%s:%s'%(contestant_data['contestant_id'], print_id)
     print_file(final_pdf_path, printer_for_contestant(contestant_data['zone']), job_name)
-    return "OK"
+    return "Queued as %s"%print_id
