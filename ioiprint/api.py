@@ -1,4 +1,5 @@
 import os
+import platform
 import random
 import string
 
@@ -86,6 +87,7 @@ def contestant():
 
     contestant_data = get_contestant_data(_real_ip())
     print_id = generate_print_id()
+    hostname = platform.uname().node
 
     final_pdf_path = make_contestant_pdf(
         original_pdf_path,
@@ -100,4 +102,4 @@ def contestant():
 
     job_name = 'contestant:%s:%s'%(contestant_data['contestant_id'], print_id)
     print_file(final_pdf_path, printer_for_contestant(contestant_data['zone']), job_name)
-    return "Queued as %s"%print_id
+    return "Queued as %s on %s"%(print_id, hostname)

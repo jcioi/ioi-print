@@ -1,5 +1,4 @@
 import os
-import platform
 import random
 import subprocess
 import tempfile
@@ -15,8 +14,7 @@ def create_temp_directory():
 
 PRINT_ID_CHARS = 'BCDFGHJKLMNPQRSTVWXYZbcdfghjklmnpqrstvwxyz'
 def generate_print_id():
-    id = ''.join(random.choices(PRINT_ID_CHARS, k=10))
-    return "%s@%s"%(id, platform.uname().node)
+    return ''.join(random.choices(PRINT_ID_CHARS, k=8))
 
 
 def html_to_pdf(html, name, temp_directory):
