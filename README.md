@@ -98,6 +98,7 @@ method: POST
 parameters: pdf -> PDF document to print
             country_code -> country code of the translating country (e.g. IR)
             country_name -> country name of the translating country (e.g. Iran)
+            cover_page -> 0|1 to indicate whether to put a cover page in front of the PDF
             count -> number of times the system should print the file
 ```
 
