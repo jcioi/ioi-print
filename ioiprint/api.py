@@ -44,13 +44,18 @@ def translation():
 
     country_code = request.form['country_code']
     country_name = request.form['country_name']
+    cover_page = int(request.form['cover_page']) > 0
     count = int(request.form['count'])
-    final_pdf_path = make_translation_pdf(
-        original_pdf_path,
-        country_code,
-        country_name,
-        temp_directory
-    )
+
+    if cover_page:
+        final_pdf_path = make_translation_pdf(
+            original_pdf_path,
+            country_code,
+            country_name,
+            temp_directory
+        )
+    else:
+        final_pdf_path = original_pdf_path
 
     job_name = 'translation:%s'%country_code
     for _ in range(count):

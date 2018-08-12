@@ -18,4 +18,4 @@ if [ ! -f "${FILENAME}" ]; then
     exit 1
 fi
 
-curl --form "pdf=@${FILENAME}" --form "country_code=${COUNTRY_CODE}" --form "country_name=${COUNTRY_NAME}" --form "count=${COUNT}" "${PRINT_SERVER_ADDRESS}/translation"
+curl --form "pdf=@${FILENAME}" --form "country_code=${COUNTRY_CODE}" --form "country_name=${COUNTRY_NAME}" --form 'cover_page=1' --form "count=${COUNT}" "${PRINT_SERVER_ADDRESS}/translation"
