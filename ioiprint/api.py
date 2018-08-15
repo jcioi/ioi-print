@@ -74,6 +74,7 @@ def cms_request():
         request_message,
         contestant_data['contestant_id'],
         contestant_data['contestant_name'],
+        contestant_data['contestant_remark'],
         contestant_data['desk_id'],
         contestant_data['desk_image_url'],
         temp_directory

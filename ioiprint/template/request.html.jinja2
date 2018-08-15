@@ -1,4 +1,4 @@
-<html>
+<html style="background-image: url({{ static_path }}/logo.png)" class="bg-topright">
 <head>
     <link rel="stylesheet" href="{{ static_path }}/fonts/fonts.css">
     <link rel="stylesheet" href="{{ static_path }}/style.css">
@@ -19,9 +19,7 @@
         <img class="map" src="{{ desk_map_img }}">
     </div>
 
-    <p class="notes">Notes:</p>
-
-    <img class="ioi_logo_request" src="{{ static_path }}/ioi-1.svg">
+    <p class="remarks">Remark: {{ contestant_remark }}</p>
 </div>
 </body>
 </html>

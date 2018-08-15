@@ -28,9 +28,10 @@ class NetAdminAPI < Sinatra::Base
       },
       contestant: {
         id: 'JPN-1',
-        country: 'JPN',
+        country: 'Japan',
         number: '1',
         name: 'Morumotto Reloaded',
+        remark: 'Some remarks for this contestant.',
       },
       desk: {
         zone: 'A',

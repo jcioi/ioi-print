@@ -1,3 +1,7 @@
+html {
+    background-color: white;
+}
+
 body, * {
     font-family: 'Source Sans Pro', arial, sans-serif;
     padding: 0;
@@ -9,9 +13,26 @@ body, * {
 }
 
 body {
-    margin: 1in .8in 0;
-    background-color: white;
+    margin: .8in .8in;
     font-size: 50px;
+}
+
+.bg-topright {
+    background-position: right .3in top .3in;
+    background-size: 35% auto;
+    background-repeat: no-repeat;
+}
+
+.bg-right {
+    background-position: right;
+    background-size: auto 100%;
+    background-repeat: repeat-y;
+}
+
+.printid {
+    position: absolute;
+    top: 0.3in;
+    left: 0.3in;
 }
 
 h1 {
@@ -44,36 +65,8 @@ p {
     margin: 40px;
 }
 
-#sidebar {
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 100%;
-    width: 400px;
-    overflow: hidden;
-}
-
-.ioi_logo_first {
-    margin: -30px -70px;
-    width: 640px;
-}
-
-.ioi_logo_request {
-    margin: -30px -50px;
-    width: 500px;
-}
-
-.ioi_logo_trans {
-    margin: 0 -50px;
-    width: 500px;
-}
-
-#side_image {
-    width: 400px;
-}
-
-.notes {
-    margin-bottom: 200px;
+.remarks {
+    font-weight: 600;
 }
 
 .first {

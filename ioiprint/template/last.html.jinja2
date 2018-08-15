@@ -1,16 +1,16 @@
-<html>
+<html style="background-image: url({{ static_path }}/background.png)" class="bg-right">
 <head>
     <link rel="stylesheet" href="{{ static_path }}/fonts/fonts.css">
     <link rel="stylesheet" href="{{ static_path }}/style.css">
     <meta charset="UTF-8">
 </head>
 <body>
+<div class="printid">Print ID: {{ print_id }}</div>
 <div class="last">
     <h2 class="small-height">Print<br>Last Page</h2>
     <div class="sep"></div>
 
     <div class="text">
-        <p>Print ID: {{ print_id }}</p>
         <p>Pages: {{ num_pages }}{% if original_num_pages %} (was {{ original_num_pages }}){% endif %}</p>
         <p>Time: {{ time }}</p>
         <p>User: {{ contestant_id }}</p>
@@ -18,9 +18,6 @@
         <p>Desk: {{ desk_id }}</p>
         <p>Country: {{ country_name }}</p>
     </div>
-</div>
-<div id="sidebar">
-    <img id="side_image" src="{{ static_path }}/side.png">
 </div>
 </body>
 </html>
