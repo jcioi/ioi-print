@@ -4,22 +4,22 @@
     <link rel="stylesheet" href="{{ static_path }}/style.css">
     <meta charset="UTF-8">
 </head>
-<body>
-<div class="request">
-    <h1>{{ contestant_id }}</h1>
-    <h2>Desk: {{ desk_id }}</h2>
-    <p>{{ contestant_name }}</p>
+<body id="request">
+<div class="page">
+  <h1>{{ contestant_id }}</h1>
+  <h2>Desk: {{ desk_id }}</h2>
+  <p>{{ contestant_name }}</p>
 
-    <div class="sep"></div>
+  <div class="sep"></div>
 
-    <p>Request Type: {{ request_message }}</p>
-    <p>Time: {{ time }}</p>
+  <p>Request Type: {{ request_message }}</p>
+  <p>Time: {{ time }}</p>
 
-    <div class="location">
-        <img class="map" src="{{ desk_map_img }}">
-    </div>
+  <div class="location">
+    <img class="map" src="{{ desk_map_img }}">
+  </div>
 
-    <p class="remarks">Remark: {{ contestant_remark }}</p>
+  <p class="remarks">Remark: {{ contestant_remark }}</p>
 </div>
 </body>
 </html>
