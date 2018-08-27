@@ -11,6 +11,7 @@ The system supports the following tasks and requests:
   * Call staff requests from the IOI Contest Management System [`cms_request`]
   * Print requests from the IOI Translation System during the translation meetings
     [`translation`]
+  * Print username/password pairs for password distribution [`password`]
   * Custom mass print requests [`mass`]
 
 ## Deployment
@@ -124,6 +125,26 @@ parameters: pdf -> PDF docment to print
 ```
 
 This will add a first and last page to the file and print it on the printer configured for the contestant zone.
+
+### password
+```
+endpoint: /password
+method: POST
+body: JSON object
+  {
+    "title": "document title",
+    "users": [
+      {
+        "name": "name",
+        "username": "login username",
+        "password": "login password",
+      },
+      ...
+    ]
+  ]
+```
+
+This will print login credentials for each specified user (for mass password distribution).
 
 
 ## Development
