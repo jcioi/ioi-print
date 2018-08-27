@@ -109,3 +109,29 @@ p {
 .text p {
     margin: 0;
 }
+
+#password h1 {
+    font-size: 1.5em;
+    margin-top: 100px;
+}
+
+#password dl {
+    width: 50%;
+    margin: 120px auto;
+}
+
+#password dt {
+    margin-top: 30px;
+}
+
+#password dd {
+    margin-left: 80px;
+}
+
+#password p {
+    font-size: .8em;
+}
+
+kbd {
+    font-family: monospace;
+}

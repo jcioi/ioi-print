@@ -5,10 +5,8 @@ import string
 
 from flask import Flask, request, jsonify
 
-from ioiprint.settings import printer_for_contestant, printer_for_translation, \
-    printer_for_mass
-from ioiprint.modifier import make_cms_request_pdf, make_contestant_pdf, \
-    make_translation_pdf
+import ioiprint.settings as settings
+import ioiprint.modifier as modifier
 from ioiprint.contestant_data import get_contestant_data
 from ioiprint.print import print_file
 from ioiprint.utils import create_temp_directory, generate_print_id
@@ -29,7 +27,7 @@ def mass():
     original_pdf_path = os.path.join(temp_directory, 'original.pdf')
     request.files['pdf'].save(original_pdf_path)
 
-    printer = request.form.get('printer', printer_for_mass())
+    printer = request.form.get('printer', settings.printer_for_mass())
     count = int(request.form['count'])
     for _ in range(count):
         print_file(original_pdf_path, printer, 'mass')
@@ -48,7 +46,7 @@ def translation():
     count = int(request.form['count'])
 
     if cover_page:
-        final_pdf_path = make_translation_pdf(
+        final_pdf_path = modifier.make_translation_pdf(
             original_pdf_path,
             country_code,
             country_name,
@@ -59,7 +57,7 @@ def translation():
 
     job_name = 'translation:%s'%country_code
     for _ in range(count):
-        print_file(final_pdf_path, printer_for_translation(), job_name)
+        print_file(final_pdf_path, settings.printer_for_translation(), job_name)
     return "OK"
 
 
@@ -70,7 +68,7 @@ def cms_request():
     request_message = request.form['request_message']
     contestant_data = get_contestant_data(_real_ip())
 
-    request_pdf_path = make_cms_request_pdf(
+    request_pdf_path = modifier.make_cms_request_pdf(
         request_message,
         contestant_data['contestant_id'],
         contestant_data['contestant_name'],
@@ -81,7 +79,7 @@ def cms_request():
     )
 
     job_name = 'cms_request:%s'%contestant_data['contestant_id']
-    print_file(request_pdf_path, printer_for_contestant(contestant_data['zone']), job_name)
+    print_file(request_pdf_path, settings.printer_for_contestant(contestant_data['zone']), job_name)
     return "OK"
 
 
@@ -95,7 +93,7 @@ def contestant():
     print_id = generate_print_id()
     hostname = platform.uname().node
 
-    final_pdf_path = make_contestant_pdf(
+    final_pdf_path = modifier.make_contestant_pdf(
         original_pdf_path,
         contestant_data['contestant_id'],
         contestant_data['contestant_name'],
@@ -107,5 +105,22 @@ def contestant():
     )
 
     job_name = 'contestant:%s:%s'%(contestant_data['contestant_id'], print_id)
-    print_file(final_pdf_path, printer_for_contestant(contestant_data['zone']), job_name)
+    print_file(final_pdf_path, settings.printer_for_contestant(contestant_data['zone']), job_name)
     return "Queued as %s on %s"%(print_id, hostname)
+
+@app.route('/password', methods=['POST'])
+def password():
+    req_data = request.get_json()
+    title = req_data['title']
+    users = req_data['users']
+
+    temp_directory = create_temp_directory()
+    pdf_path = modifier.make_password_pdf(
+        title=title,
+        users=users,
+        temp_directory=temp_directory,
+    )
+
+    job_name = 'password'
+    print_file(pdf_path, settings.printer_for_mass(), job_name)
+    return jsonify({'status': 'OK'})
