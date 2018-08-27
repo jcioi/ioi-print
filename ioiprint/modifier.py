@@ -123,3 +123,12 @@ def make_cms_request_pdf(request_message, contestant_id, contestant_name,
     request_pdf = html_to_pdf(request_html, 'request', temp_directory)
 
     return request_pdf
+
+def make_password_pdf(title, users, temp_directory):
+    template = JINAJ_ENV.get_template('password.html.jinja2')
+    html = template.render(
+        static_path=STATIC_PATH,
+        title=title,
+        users=users,
+    )
+    return html_to_pdf(html, 'password', temp_directory)

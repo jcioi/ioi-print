@@ -4,21 +4,21 @@
     <link rel="stylesheet" href="{{ static_path }}/style.css">
     <meta charset="UTF-8">
 </head>
-<body>
-<div class="printid">Print ID: {{ print_id }}</div>
-<div class="first">
-    <h1>{{ contestant_id }}</h1>
-    <h2>Desk: {{ desk_id }}</h2>
-    <p>{{ contestant_name }}</p>
+<body id="first">
+<div class="page">
+  <div class="printid">Print ID: {{ print_id }}</div>
+  <h1>{{ contestant_id }}</h1>
+  <h2>Desk: {{ desk_id }}</h2>
+  <p>{{ contestant_name }}</p>
 
-    <div class="sep"></div>
+  <div class="sep"></div>
 
-    <p>Pages: {{ num_pages }}{% if original_num_pages %} (was {{ original_num_pages }}){% endif %}</p>
-    <p>Time: {{ time }}</p>
+  <p>Pages: {{ num_pages }}{% if original_num_pages %} (was {{ original_num_pages }}){% endif %}</p>
+  <p>Time: {{ time }}</p>
 
-    <div class="location">
-        <img class="map" src="{{ desk_map_img }}">
-    </div>
+  <div class="location">
+    <img class="map" src="{{ desk_map_img }}">
+  </div>
 </div>
 </body>
 </html>

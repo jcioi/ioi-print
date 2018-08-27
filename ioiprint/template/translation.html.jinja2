@@ -1,18 +1,18 @@
-<html style="background-image: url({{ static_path }}/logo.png)" class="bg-topright">
+<html>
 <head>
     <link rel="stylesheet" href="{{ static_path }}/fonts/fonts.css">
     <link rel="stylesheet" href="{{ static_path }}/style.css">
     <meta charset="UTF-8">
 </head>
-<body>
-<div class="trans">
-    <h1>{{ country_code }}</h1>
-    <h2>{{ country_name }}</h2>
+<body id="translation">
+<div class="page bg-topright" style="background-image: url({{ static_path }}/logo.png)">
+  <h1>{{ country_code }}</h1>
+  <h2>{{ country_name }}</h2>
 
-    <div class="sep"></div>
+  <div class="sep"></div>
 
-    <p>Pages: {{ num_pages }}</p>
-    <p>Time: {{ time }}</p>
+  <p>Pages: {{ num_pages }}</p>
+  <p>Time: {{ time }}</p>
 </div>
 </body>
 </html>
