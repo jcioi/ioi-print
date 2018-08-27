@@ -61,26 +61,26 @@ def translation():
     return "OK"
 
 
-@app.route('/cms_request', methods=['POST'])
-def cms_request():
+@app.route('/staff_call', methods=['POST'])
+def staff_call():
+    req_data = request.get_json()
+    message = req_data['message']
+    contestant = req_data['contestant']
+    contestant_id = req_data['contestant']['id']
+    desk = req_data['desk']
+    desk_zone = req_data['desk'].get('zone')
+
     temp_directory = create_temp_directory()
-
-    request_message = request.form['request_message']
-    contestant_data = get_contestant_data(_real_ip())
-
-    request_pdf_path = modifier.make_cms_request_pdf(
-        request_message,
-        contestant_data['contestant_id'],
-        contestant_data['contestant_name'],
-        contestant_data['contestant_remark'],
-        contestant_data['desk_id'],
-        contestant_data['desk_image_url'],
-        temp_directory
+    pdf_path = modifier.make_staff_call_pdf(
+        message=message,
+        contestant=contestant,
+        desk=desk,
+        temp_directory=temp_directory,
     )
 
-    job_name = 'cms_request:%s'%contestant_data['contestant_id']
-    print_file(request_pdf_path, settings.printer_for_contestant(contestant_data['zone']), job_name)
-    return "OK"
+    job_name = 'staff_call:%s'%contestant_id
+    print_file(pdf_path, settings.printer_for_contestant(desk_zone), job_name)
+    return jsonify({'status': 'OK'})
 
 
 @app.route('/contestant', methods=['POST'])

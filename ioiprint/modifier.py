@@ -13,13 +13,15 @@ JINAJ_ENV = Environment(
     autoescape=select_autoescape(['html'])
 )
 
+def _formatted_time():
+    return datetime.now().strftime('%a, %H:%M:%S')
 
 def _get_num_of_pages(pdf_file_path):
     return int(subprocess.check_output(['qpdf', '--show-npages', pdf_file_path]).strip())
 
 def make_translation_pdf(pdf_file_path, country_code, country_name,
                          temp_directory):
-    formatted_time = datetime.now().strftime('%a, %H:%M:%S')
+    time = _formatted_time()
     num_pages = _get_num_of_pages(pdf_file_path)
 
     first_page_template = JINAJ_ENV.get_template('translation.html.jinja2')
@@ -28,7 +30,7 @@ def make_translation_pdf(pdf_file_path, country_code, country_name,
         country_code=country_code,
         country_name=country_name,
         num_pages=num_pages,
-        time=formatted_time
+        time=time,
     )
     first_page_pdf = html_to_pdf(first_page_html, 'first', temp_directory)
 
@@ -51,7 +53,7 @@ def make_translation_pdf(pdf_file_path, country_code, country_name,
 def make_contestant_pdf(pdf_file_path, contestant_id, contestant_name,
                         contestant_country, desk_id, desk_map_img, print_id,
                         temp_directory):
-    formatted_time = datetime.now().strftime('%a, %H:%M:%S')
+    time = _formatted_time()
     num_pages = _get_num_of_pages(pdf_file_path)
     original_num_pages = None
 
@@ -67,7 +69,7 @@ def make_contestant_pdf(pdf_file_path, contestant_id, contestant_name,
         contestant_name=contestant_name,
         num_pages=num_pages,
         original_num_pages=original_num_pages,
-        time=formatted_time,
+        time=time,
         print_id=print_id,
         desk_map_img=desk_map_img
     )
@@ -79,7 +81,7 @@ def make_contestant_pdf(pdf_file_path, contestant_id, contestant_name,
         print_id=print_id,
         num_pages=num_pages,
         original_num_pages=original_num_pages,
-        time=formatted_time,
+        time=time,
         contestant_id=contestant_id,
         desk_id=desk_id,
         country_name=contestant_country,
@@ -104,25 +106,18 @@ def make_contestant_pdf(pdf_file_path, contestant_id, contestant_name,
     return final_pdf_path
 
 
-def make_cms_request_pdf(request_message, contestant_id, contestant_name,
-                         contestant_remark, desk_id, desk_map_img,
-                         temp_directory):
-    formatted_time = datetime.now().strftime('%a, %H:%M:%S')
+def make_staff_call_pdf(message, contestant, desk, temp_directory):
+    time = _formatted_time()
 
-    request_template = JINAJ_ENV.get_template('request.html.jinja2')
-    request_html = request_template.render(
+    template = JINAJ_ENV.get_template('staff_call.html.jinja2')
+    html = template.render(
         static_path=STATIC_PATH,
-        contestant_id=contestant_id,
-        contestant_name=contestant_name,
-        contestant_remark=contestant_remark,
-        desk_id=desk_id,
-        request_message=request_message,
-        time=formatted_time,
-        desk_map_img=desk_map_img
+        message=message,
+        contestant=contestant,
+        desk=desk,
+        time=time,
     )
-    request_pdf = html_to_pdf(request_html, 'request', temp_directory)
-
-    return request_pdf
+    return html_to_pdf(html, 'staff_call', temp_directory)
 
 def make_password_pdf(title, users, temp_directory):
     template = JINAJ_ENV.get_template('password.html.jinja2')
