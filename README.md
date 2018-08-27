@@ -8,9 +8,10 @@ The system has been developed for and was first used in the
 The system supports the following tasks and requests:
   * Print requests from contestants during the contest
     (via a custom printer installed on all contestants machines) [`contestant`]
-  * Call staff requests from the IOI Contest Management System [`cms_request`]
+  * Call staff requests from contestants during competitions [`staff_call`]
   * Print requests from the IOI Translation System during the translation meetings
     [`translation`]
+  * Print username/password pairs for password distribution [`password`]
   * Custom mass print requests [`mass`]
 
 ## Deployment
@@ -30,11 +31,11 @@ ioiprint reads a JSON configuration from the file specified by `IOIPRINT_CONFIG`
 ```
 {
   "contestant_max_pages": 10,        # max number of pages a contestant can print at a time
-  "contastant_printer_map": {        # mapping of desk zones to names of printers used for contestant and cms_request jobs
+  "contastant_printer_map": {        # mapping of desk zones to names of printers used for contestant and staff_call jobs
     "A": "PRINTER",
     "B": "PRINTER",
   },
-  "contestant_printer": "PRINTER",   # name of printer used for contestant and cms_request jobs (effective when contastant_printer_map is not specified)
+  "contestant_printer": "PRINTER",   # name of printer used for contestant and staff_call jobs (effective when contastant_printer_map is not specified)
   "translation_printer": "PRINTER",  # name of printer used for translation jobs
   "default_printer": "PRINTER",      # name of printer used for mass jobs when printer is not specified
   "cups_server": "hostname:port",    # address of CUPS server where the real printers are registered
@@ -53,13 +54,11 @@ For testing you can use `scripts/contestant.sh` (You should change `PRINT_SERVER
 
 You can also change the templates used for rendering the first page and the last page of the prints by changing the `first.html.jinja2` and `last.html.jinja2` in `ioiprint/template` directory (They are in [Jinja2](http://jinja.pocoo.org/) format).
 
-### For call staff requests from CMS
+### For call staff requests
 
-You should add print server address in [CMS](https://github.com/akmohtashami/cms) and it should work.
+For testing you can use `scripts/staff_call.rb` (You should change `PRINT_SERVER_ADDRESS`).
 
-For testing you can use `scripts/cms_request.sh` (You should change `PRINT_SERVER_ADDRESS`).
-
-You can also change the template used for rendering the prints by changing the `request.html.jinja2` in `ioiprint/template` directory (They are in [Jinja2](http://jinja.pocoo.org/) format).
+You can also change the template used for rendering the prints by changing the `staff_call.html.jinja2` in `ioiprint/template` directory (They are in [Jinja2](http://jinja.pocoo.org/) format).
 
 ### For custom translation requests from Translation System
 
@@ -104,13 +103,24 @@ parameters: pdf -> PDF document to print
 
 This will add a first page and print the file previously uploaded `count` times on default printer.
 
-### cms_request
+### staff_call
 
 ```
-endpoint: /cms_request
+endpoint: /staff_call
 method: POST
-parameters: request_message -> The request message (e.g. Restroom)
-            ip -> IP of the contestant computer
+body: JSON object
+  {
+    message: "request message (eg. Restroom)",
+    contestant: {
+      id: "contestant ID",
+      name: "contestant name",
+    },
+    desk: {
+      id: "desk ID",
+      map: "URI to map image (optional)",
+      zone: "desk zone for printer selection (optional)",
+    },
+  }
 ```
 
 This will print a page with contestant info and request message on the printer configured for the contestant zone.
@@ -124,6 +134,26 @@ parameters: pdf -> PDF docment to print
 ```
 
 This will add a first and last page to the file and print it on the printer configured for the contestant zone.
+
+### password
+```
+endpoint: /password
+method: POST
+body: JSON object
+  {
+    "title": "document title",
+    "users": [
+      {
+        "name": "name",
+        "username": "login username",
+        "password": "login password",
+      },
+      ...
+    ]
+  ]
+```
+
+This will print login credentials for each specified user (for mass password distribution).
 
 
 ## Development

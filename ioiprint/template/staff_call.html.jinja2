@@ -1,0 +1,29 @@
+<html>
+<head>
+    <link rel="stylesheet" href="{{ static_path }}/fonts/fonts.css">
+    <link rel="stylesheet" href="{{ static_path }}/style.css">
+    <meta charset="UTF-8">
+</head>
+<body id="staff_call">
+<div class="page bg-topright" style="background-image: url({{ static_path }}/logo.png)">
+  <h1>{{ contestant.id }}</h1>
+  <h2>Desk: {{ desk.id }}</h2>
+  <p>{{ contestant.name }}</p>
+
+  <div class="sep"></div>
+
+  <p>Request: {{ message }}</p>
+  <p>Time: {{ time }}</p>
+
+  {% if desk.map %}
+  <div class="location">
+    <img class="map" src="{{ desk.map }}">
+  </div>
+  {% endif %}
+
+  {% if contestant.special_requirement_note %}
+  <p class="notice">Notice: {{ contestant.special_requirement_note }}</p>
+  {% endif %}
+</div>
+</body>
+</html>
