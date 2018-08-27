@@ -116,8 +116,8 @@ p {
 }
 
 #password dl {
-    width: 50%;
-    margin: 120px auto;
+    width: auto;
+    margin: 120px 50px;
 }
 
 #password dt {
@@ -125,7 +125,7 @@ p {
 }
 
 #password dd {
-    margin-left: 80px;
+    margin-left: 50px;
 }
 
 #password p {
