@@ -7,8 +7,8 @@ from flask import Flask, request, jsonify
 
 import ioiprint.settings as settings
 import ioiprint.modifier as modifier
+from ioiprint.print import print_file, JOB_PRIORITY_HIGH
 from ioiprint.contestant_data import get_contestant_data
-from ioiprint.print import print_file
 from ioiprint.utils import create_temp_directory, generate_print_id
 
 app = Flask('ioiprint')
@@ -79,7 +79,8 @@ def staff_call():
     )
 
     job_name = 'staff_call:%s'%contestant_id
-    print_file(pdf_path, settings.printer_for_contestant(desk_zone), job_name)
+    print_file(pdf_path, settings.printer_for_contestant(desk_zone),
+               job_name, job_priority=JOB_PRIORITY_HIGH)
     return jsonify({'status': 'OK'})
 
 
