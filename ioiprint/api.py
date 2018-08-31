@@ -10,6 +10,7 @@ import ioiprint.modifier as modifier
 from ioiprint.print import print_file, JOB_PRIORITY_HIGH
 from ioiprint.contestant_data import get_contestant_data
 from ioiprint.utils import create_temp_directory, generate_print_id
+from ioiprint.metrics import get_metrics
 
 app = Flask('ioiprint')
 
@@ -134,4 +135,13 @@ def password():
 
 @app.route('/metrics', methods=['GET'])
 def metrics():
-    return 'OK'
+    metrics = get_metrics()
+    result = ''
+    for job_name, count_by_key in metrics.items():
+        for job_value, count in count_by_key.items():
+            prometheus_key = 'ioiprint_%s_jobs'%(job_name)
+            result += '''# HELP {prometheus_key} It shows how many printer jobs are called
+# TYPE {prometheus_key} counter
+{prometheus_key}{{{job_name}="{job_value}"}} {count}
+'''.format(prometheus_key=prometheus_key, job_name=job_name, job_value=job_value, count=count)
+    return result
