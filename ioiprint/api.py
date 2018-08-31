@@ -106,7 +106,13 @@ def contestant():
     )
 
     job_name = 'contestant:%s:%s'%(contestant_data['contestant_id'], print_id)
-    print_file(final_pdf_path, settings.printer_for_contestant(contestant_data['zone']), job_name)
+    metric_name = 'contestant:%s'%(contestant_data['contestant_id'])
+    print_file(
+        file_path=final_pdf_path,
+        printer=settings.printer_for_contestant(contestant_data['zone']),
+        job_name=job_name,
+        metric_name=metric_name
+    )
     return "Queued as %s on %s"%(print_id, hostname)
 
 @app.route('/password', methods=['POST'])
@@ -125,3 +131,7 @@ def password():
     job_name = 'password'
     print_file(pdf_path, settings.printer_for_mass(), job_name)
     return jsonify({'status': 'OK'})
+
+@app.route('/metrics', methods=['GET'])
+def metrics():
+    return 'OK'
