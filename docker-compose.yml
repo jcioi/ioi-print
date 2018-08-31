@@ -30,3 +30,6 @@ services:
   netadmin-api:
     build:
       context: stub-netadmin-api
+
+  redis:
+    image: redis
