@@ -38,3 +38,6 @@ def contestant_data_url(ip):
         return '{base}/api/nodes/ip/{ip}/'.format(base=SETTINGS['netadmin_url'], ip=ip)
     else:
         return None
+
+REDIS_HOST = SETTINGS.get('redis_host')
+REDIS_PORT = SETTINGS.get('redis_port')

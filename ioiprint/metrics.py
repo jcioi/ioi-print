@@ -1,4 +1,5 @@
 import redis
+from ioiprint.settings import REDIS_HOST, REDIS_PORT
 
 print_count_prefix = 'print_count:'
 print_count_prefixes_by_job = {
@@ -6,7 +7,7 @@ print_count_prefixes_by_job = {
   'translation': print_count_prefix + 'translation:',
   'staff_call': print_count_prefix + 'staff_call:'
 }
-db = redis.Redis(host='redis', port=6379)
+db = redis.Redis(host=REDIS_HOST, port=REDIS_PORT)
 
 def countup_print(job_name):
   key = print_count_prefix + job_name
