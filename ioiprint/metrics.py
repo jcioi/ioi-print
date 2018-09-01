@@ -36,7 +36,7 @@ def search_job_type_from_key(key):
     return None
 
 def get_job_value_from_key(job_type, key):
-    prefix = print_count_prefixes_by_job_type[job_tye]
+    prefix = print_count_prefixes_by_job_type[job_type]
     job_value = key[len(prefix):]
     return job_value
 
