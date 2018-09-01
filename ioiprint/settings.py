@@ -42,4 +42,4 @@ def contestant_data_url(ip):
 if 'metrics_store_file' in SETTINGS:
     METRICS_STORE_FILE = SETTINGS['metrics_store_file']
 else:
-    METRICS_STORE_FILE = 'metrics.json'
+    METRICS_STORE_FILE = '/tmp/metrics.json'
