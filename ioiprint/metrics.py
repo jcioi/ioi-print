@@ -1,4 +1,5 @@
 import json
+import fcntl
 
 from ioiprint.settings import METRICS_STORE_FILE
 
@@ -14,6 +15,7 @@ def load_metrics():
         metrics_file = open(METRICS_STORE_FILE)
         metrics = json.load(metrics_file)
     except FileNotFoundError as e:
+        open(METRICS_STORE_FILE, 'a').close() # Create file if not exists
         metrics = None
     except json.decoder.JSONDecodeError as e:
         metrics = None
@@ -21,8 +23,13 @@ def load_metrics():
         metrics = {}
     return metrics
 
+def lock_file(file):
+    f = open(file)
+    fcntl.flock(f, fcntl.LOCK_EX)
+
 def countup_print(job_name):
     metrics = load_metrics()
+    lock_file(METRICS_STORE_FILE)
     key = print_count_prefix + job_name
     if key not in metrics:
         metrics[key] = 0
