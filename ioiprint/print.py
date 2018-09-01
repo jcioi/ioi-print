@@ -7,7 +7,7 @@ JOB_PRIORITY_DEFAULT=1
 JOB_PRIORITY_HIGH=50
 
 def print_file(file_path, printer, job_name=None, job_priority=JOB_PRIORITY_DEFAULT, metric_name=None):
-    if metric_name == None:
+    if metric_name is None:
         metric_name = job_name
     countup_print(metric_name)
 

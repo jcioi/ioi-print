@@ -7,7 +7,10 @@ print_count_prefixes_by_job = {
     'translation': print_count_prefix + 'translation:',
     'staff_call': print_count_prefix + 'staff_call:'
 }
-db = redis.Redis(host=REDIS_HOST, port=REDIS_PORT)
+if REDIS_PORT is None:
+    db = redis.Redis(host=REDIS_HOST)
+else:
+    db = redis.Redis(host=REDIS_HOST, port=REDIS_PORT)
 
 def countup_print(job_name):
     try:
