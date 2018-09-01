@@ -2,7 +2,7 @@ require 'sinatra/base'
 require 'json'
 
 class NetAdminAPI < Sinatra::Base
-  get '/api/nodes/ip/:ip/' do
+  get '/machines/lookup' do
     [
       200,
       {Rack::CONTENT_TYPE => 'application/json'},
@@ -10,11 +10,11 @@ class NetAdminAPI < Sinatra::Base
     ]
   end
 
-  get '/api/nodes/ip/:ip/map/' do
+  get '/desks/:id/map' do
     [
       200,
       {Rack::CONTENT_TYPE => 'image/svg+xml'},
-      [map_data(params['ip'])],
+      [map_data(params['id'])],
     ]
   end
 
@@ -22,27 +22,24 @@ class NetAdminAPI < Sinatra::Base
 
   def node_data(ip)
     {
-      node: {
+      machine: {
         ip: ip,
         mac: '00:00:00:00:00:00',
       },
       contestant: {
         id: 'JPN-1',
-        country: 'Japan',
-        number: '1',
         name: 'Morumotto Reloaded',
-        remark: 'Some remarks for this contestant.',
+        special_requirement_note: 'Some remarks for this contestant.',
       },
       desk: {
-        zone: 'A',
-        number: 10,
-        map: "/api/nodes/ip/#{ip}/map/",
+        zone: 'arena',
+        map: "http://netadmin-api/desks/A-10/map",
         id: 'A-10',
       },
     }
   end
 
-  def map_data(ip)
+  def map_data(id)
     IO.read('assets/desk_map.svg')
   end
 end

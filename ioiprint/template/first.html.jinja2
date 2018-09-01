@@ -7,9 +7,9 @@
 <body id="first">
 <div class="page">
   <div class="printid">Print ID: {{ print_id }}</div>
-  <h1>{{ contestant_id }}</h1>
-  <h2>Desk: {{ desk_id }}</h2>
-  <p>{{ contestant_name }}</p>
+  <h1>{{ contestant.id }}</h1>
+  <h2>Desk: {{ desk.id }}</h2>
+  <p>{{ contestant.name }}</p>
 
   <div class="sep"></div>
 
@@ -17,7 +17,7 @@
   <p>Time: {{ time }}</p>
 
   <div class="location">
-    <img class="map" src="{{ desk_map_img }}">
+    <img class="map" src="{{ desk.map }}">
   </div>
 </div>
 </body>

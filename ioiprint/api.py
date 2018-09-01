@@ -92,25 +92,25 @@ def contestant():
     request.files['pdf'].save(original_pdf_path)
 
     contestant_data = get_contestant_data(_real_ip())
+    contestant_id = (contestant_data['contestant'] or {}).get('id', '')
+    desk_zone = (contestant_data['desk'] or {}).get('zone')
+
     print_id = generate_print_id()
     hostname = platform.uname().node
 
     final_pdf_path = modifier.make_contestant_pdf(
-        original_pdf_path,
-        contestant_data['contestant_id'],
-        contestant_data['contestant_name'],
-        contestant_data['contestant_country'],
-        contestant_data['desk_id'],
-        contestant_data['desk_image_url'],
-        print_id,
-        temp_directory
+        pdf_file_path=original_pdf_path,
+        contestant=contestant_data['contestant'],
+        desk=contestant_data['desk'],
+        print_id=print_id,
+        temp_directory=temp_directory,
     )
 
-    job_name = 'contestant:%s:%s'%(contestant_data['contestant_id'], print_id)
-    metric_name = 'contestant:%s'%(contestant_data['contestant_id'])
+    job_name = 'contestant:%s:%s'%(contestant_id, print_id)
+    metric_name = 'contestant:%s'%(contestant_id)
     print_file(
         file_path=final_pdf_path,
-        printer=settings.printer_for_contestant(contestant_data['zone']),
+        printer=settings.printer_for_contestant(desk_zone),
         job_name=job_name,
         metric_name=metric_name
     )

@@ -13,10 +13,9 @@
   <div class="text">
     <p>Pages: {{ num_pages }}{% if original_num_pages %} (was {{ original_num_pages }}){% endif %}</p>
     <p>Time: {{ time }}</p>
-    <p>User: {{ contestant_id }}</p>
-    <p>Name: {{ contestant_name }}</p>
-    <p>Desk: {{ desk_id }}</p>
-    <p>Country: {{ country_name }}</p>
+    <p>User: {{ contestant.id }}</p>
+    <p>Name: {{ contestant.name }}</p>
+    <p>Desk: {{ desk.id }}</p>
   </div>
 </div>
 </body>

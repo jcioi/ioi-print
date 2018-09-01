@@ -35,7 +35,7 @@ def printer_for_mass():
 
 def contestant_data_url(ip):
     if 'netadmin_url' in SETTINGS:
-        return '{base}/api/nodes/ip/{ip}/'.format(base=SETTINGS['netadmin_url'], ip=ip)
+        return '{base}/machines/lookup?ip={ip}'.format(base=SETTINGS['netadmin_url'], ip=ip)
     else:
         return None
 
