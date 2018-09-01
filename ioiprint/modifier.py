@@ -50,9 +50,7 @@ def make_translation_pdf(pdf_file_path, country_code, country_name,
     return final_pdf_path
 
 
-def make_contestant_pdf(pdf_file_path, contestant_id, contestant_name,
-                        contestant_country, desk_id, desk_map_img, print_id,
-                        temp_directory):
+def make_contestant_pdf(pdf_file_path, contestant, desk,  print_id, temp_directory):
     time = _formatted_time()
     num_pages = _get_num_of_pages(pdf_file_path)
     original_num_pages = None
@@ -64,28 +62,24 @@ def make_contestant_pdf(pdf_file_path, contestant_id, contestant_name,
     first_page_template = JINJA_ENV.get_template('first.html.jinja2')
     first_page_html = first_page_template.render(
         static_path=STATIC_PATH,
-        contestant_id=contestant_id,
-        desk_id=desk_id,
-        contestant_name=contestant_name,
+        contestant=contestant,
+        desk=desk,
         num_pages=num_pages,
         original_num_pages=original_num_pages,
         time=time,
         print_id=print_id,
-        desk_map_img=desk_map_img
     )
     first_page_pdf = html_to_pdf(first_page_html, 'first', temp_directory)
 
     last_page_template = JINJA_ENV.get_template('last.html.jinja2')
     last_page_html = last_page_template.render(
         static_path=STATIC_PATH,
-        print_id=print_id,
+        contestant=contestant,
+        desk=desk,
         num_pages=num_pages,
         original_num_pages=original_num_pages,
         time=time,
-        contestant_id=contestant_id,
-        desk_id=desk_id,
-        country_name=contestant_country,
-        contestant_name=contestant_name
+        print_id=print_id,
     )
     last_page_pdf = html_to_pdf(last_page_html, 'last', temp_directory)
 
