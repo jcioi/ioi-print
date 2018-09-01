@@ -38,3 +38,8 @@ def contestant_data_url(ip):
         return '{base}/api/nodes/ip/{ip}/'.format(base=SETTINGS['netadmin_url'], ip=ip)
     else:
         return None
+
+if 'metrics_store_file' in SETTINGS:
+    METRICS_STORE_FILE = SETTINGS['metrics_store_file']
+else:
+    METRICS_STORE_FILE = 'metrics.json'
