@@ -14,9 +14,7 @@ services:
           "netadmin_url": "http://netadmin-api",
           "cups_server": "cups:631",
           "contestant_printer": "PDF",
-          "default_printer": "PDF",
-          "redis_host": "redis",
-          "redis_port": 6379
+          "default_printer": "PDF"
         }
 
   cups:
@@ -32,6 +30,3 @@ services:
   netadmin-api:
     build:
       context: stub-netadmin-api
-
-  redis:
-    image: redis

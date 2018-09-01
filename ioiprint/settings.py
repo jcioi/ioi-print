@@ -39,5 +39,7 @@ def contestant_data_url(ip):
     else:
         return None
 
-REDIS_HOST = SETTINGS.get('redis_host')
-REDIS_PORT = SETTINGS.get('redis_port')
+if 'metrics_store_file' in SETTINGS:
+    METRICS_STORE_FILE = SETTINGS['metrics_store_file']
+else:
+    METRICS_STORE_FILE = 'metrics.json'

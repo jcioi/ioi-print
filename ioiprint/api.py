@@ -137,11 +137,11 @@ def password():
 def metrics():
     metrics = get_metrics()
     result = ''
-    for job_name, count_by_key in metrics.items():
+    for job_type, count_by_key in metrics.items():
         for job_value, count in count_by_key.items():
-            prometheus_key = 'ioiprint_%s_jobs'%(job_name)
+            prometheus_key = 'ioiprint_%s_jobs'%(job_type)
             result += '''# HELP {prometheus_key} It shows how many printer jobs are called
 # TYPE {prometheus_key} counter
-{prometheus_key}{{{job_name}="{job_value}"}} {count}
-'''.format(prometheus_key=prometheus_key, job_name=job_name, job_value=job_value, count=count)
+{prometheus_key}{{{job_type}="{job_value}"}} {count}
+'''.format(prometheus_key=prometheus_key, job_type=job_type, job_value=job_value, count=count)
     return result
