@@ -16,9 +16,11 @@
   <p>Pages: {{ num_pages }}{% if original_num_pages %} (was {{ original_num_pages }}){% endif %}</p>
   <p>Time: {{ time }}</p>
 
+  {% if desk.map %}
   <div class="location">
     <img class="map" src="{{ desk.map }}">
   </div>
+  {% endif %}
 </div>
 </body>
 </html>
