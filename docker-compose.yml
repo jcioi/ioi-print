@@ -14,7 +14,8 @@ services:
           "netadmin_url": "http://netadmin-api",
           "cups_server": "cups:631",
           "contestant_printer": "PDF",
-          "default_printer": "PDF"
+          "default_printer": "PDF",
+          "metrics_store_file": "/tmp/ioiprint.metrics.json"
         }
 
   cups:
