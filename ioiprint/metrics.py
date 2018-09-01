@@ -45,6 +45,8 @@ def get_metrics():
     metrics = load_metrics()
     for key, count in metrics.items():
         job_type = search_job_type_from_key(key)
+        if job_type not in counter:
+            counte[job_type] = {}
         job_value = get_job_value_from_key(job_type, key)
         counter[job_type][job_value] = count
     return counter
