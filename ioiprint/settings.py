@@ -21,12 +21,12 @@ CUPS_SERVER_ADDRESS = SETTINGS.get('cups_server')
 def printer_for_contestant(zone):
     if zone is not None and 'contestant_printer_map' in SETTINGS:
         return SETTINGS['contestant_printer_map'][zone]
-    if 'contestant_printer' in 'SETTINGS':
+    if 'contestant_printer' in SETTINGS:
         return SETTINGS['contestant_printer']
     return SETTINGS['default_printer']
 
 def printer_for_translation():
-    if 'translation_printer' in 'SETTINGS':
+    if 'translation_printer' in SETTINGS:
         return SETTINGS['translation_printer']
     return SETTINGS['default_printer']
 
